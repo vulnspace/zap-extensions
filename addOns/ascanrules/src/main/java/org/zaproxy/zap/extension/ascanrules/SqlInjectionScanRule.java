@@ -813,7 +813,7 @@ public class SqlInjectionScanRule extends AbstractAppParamPlugin
             // query was last run (could be hours ago)
             // so to work around this, simply re-run the query again now at this point.
             // Note that we are not counting this request in our max number of requests to be issued
-           if (getAlertThreshold().equals(AlertThreshold.LOW)) {
+            if (getAlertThreshold().equals(AlertThreshold.LOW)){
 	            refreshedmessage = getNewMsg();
 	            try {
 	                sendAndReceive(refreshedmessage, false); // do not follow redirects
@@ -825,15 +825,15 @@ public class SqlInjectionScanRule extends AbstractAppParamPlugin
 	                        refreshedmessage.getRequestHeader().getURI());
 	                return; // Something went wrong, no point continuing
 	            }
-
+	
 	            // String mResBodyNormal = getBaseMsg().getResponseBody().toString();
 	            mResBodyNormalUnstripped = refreshedmessage.getResponseBody().toString();
 	            mResBodyNormalStripped = this.stripOff(mResBodyNormalUnstripped, origParamValue);
-
+	
 	            if (!sqlInjectionFoundForUrl
 	                    && doExpressionBased
 	                    && countExpressionBasedRequests < doExpressionMaxRequests) {
-
+	
 	                // first figure out the type of the parameter..
 	                try {
 	                    // is it an integer type?
@@ -841,7 +841,7 @@ public class SqlInjectionScanRule extends AbstractAppParamPlugin
 	                    // int paramAsInt =
 	                    // Integer.parseInt(SqlInjectionScanRule.getURLDecode(origParamValue));
 	                    int paramAsInt = Integer.parseInt(origParamValue);
-
+	
 	                    LOGGER.debug("The parameter value [{}] is of type Integer", origParamValue);
 	                    // This check is implemented using two variant PLUS(+) and MULT(*)
 	                    try {
