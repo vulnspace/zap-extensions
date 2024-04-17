@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+### Fixed
+- False positives in the Path Traversal rule.
 
 ## [65] - 2024-03-28
 ### Changed
