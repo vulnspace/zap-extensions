@@ -6,9 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 ### Added
 - Video link in help for Automation Framework job.
+- Support for menu weights (Issue 8369)
 
 ### Changed
 - Maintenance changes.
+
+### Fixed
+- A typo in an API end-point description.
 
 ## [23.18.0] - 2023-11-10
 ### Added

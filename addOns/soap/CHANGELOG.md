@@ -4,11 +4,16 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+
+
+## [22] - 2024-03-25
 ### Added
 - Video link in help for Automation Framework job.
 
 ### Changed
 - Maintenance changes.
+- Link website alert pages and help (Issue 8189).
+- Updated Alerts' reference links (Issue 8262).
 
 ## [21] - 2023-12-19
 ### Fixed
@@ -159,6 +164,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version
 
+[22]: https://github.com/zaproxy/zap-extensions/releases/soap-v22
 [21]: https://github.com/zaproxy/zap-extensions/releases/soap-v21
 [20]: https://github.com/zaproxy/zap-extensions/releases/soap-v20
 [19]: https://github.com/zaproxy/zap-extensions/releases/soap-v19

@@ -49,6 +49,10 @@
 	<h3>
 		<th:block th:text="#{report.zapVersion(${zapVersion})}">ZAP Version</th:block>
 	</h3>
+	<h4>
+		ZAP is supported by the <a href="https://crashoverride.com/?zap=rep">Crash
+			Override Open Source Fellowship</a>
+	</h4>
 	<th:block th:if="${reportData.isIncludeSection('chart')}">
 		<canvas id="summaryChart" width="550" height="300"
 			style="border: 1px solid"></canvas>
@@ -365,7 +369,7 @@
 						<td th:text="${instance.userObject.otherinfo}" width="80%">Other
 							Info</td>
 					</tr>
-					<tr>
+					<tr data-th-if="${instance.userObject.message}">
 						<td width="20%" class="indent2">
 							<div th:id="${'alert-' + instance.userObject.alertId}">
 								<a
@@ -376,7 +380,7 @@
 						</td>
 						<td width="80%"></td>
 					</tr>
-					<tr>
+					<tr data-th-if="${instance.userObject.message}">
 						<td width="20%" class="indent2"><th:block
 								th:text="#{report.alerts.detail.request.header}">Request Header</th:block>
 							<th:block
@@ -393,7 +397,7 @@
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr data-th-if="${instance.userObject.message}">
 						<td width="20%" class="indent2"><th:block
 								th:text="#{report.alerts.detail.request.body}">Request Body</th:block>
 							<th:block
@@ -410,7 +414,7 @@
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr data-th-if="${instance.userObject.message}">
 						<td width="20%" class="indent2"><th:block
 								th:text="#{report.alerts.detail.response.header}">Response Header</th:block>
 							<th:block
@@ -427,7 +431,7 @@
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr data-th-if="${instance.userObject.message}">
 						<td width="20%" class="indent2"><th:block
 								th:text="#{report.alerts.detail.response.body}">Response Body</th:block>
 							<th:block

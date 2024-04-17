@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+## [47] - 2024-03-28
+### Changed
+- References for the LDAP Injection scan rule's Alerts were updated (Issue 8262).
+
 ## [46] - 2024-01-26
 ### Changed
 - Move MongoDB time based tests to its own scan rule, NoSQL Injection - MongoDB (Time Based) with ID 90039 (Issue 7341).
@@ -369,6 +373,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version, including persistent XSS tests
 
+[47]: https://github.com/zaproxy/zap-extensions/releases/ascanrulesAlpha-v47
 [46]: https://github.com/zaproxy/zap-extensions/releases/ascanrulesAlpha-v46
 [45]: https://github.com/zaproxy/zap-extensions/releases/ascanrulesAlpha-v45
 [44]: https://github.com/zaproxy/zap-extensions/releases/ascanrulesAlpha-v44

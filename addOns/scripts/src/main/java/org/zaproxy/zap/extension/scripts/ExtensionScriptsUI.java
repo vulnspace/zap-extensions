@@ -49,6 +49,7 @@ import org.parosproxy.paros.view.OptionsDialog;
 import org.parosproxy.paros.view.View;
 import org.zaproxy.zap.ZAP;
 import org.zaproxy.zap.extension.api.API;
+import org.zaproxy.zap.extension.ascan.ExtensionActiveScan;
 import org.zaproxy.zap.extension.authentication.ExtensionAuthentication;
 import org.zaproxy.zap.extension.help.ExtensionHelp;
 import org.zaproxy.zap.extension.pscan.ExtensionPassiveScan;
@@ -59,7 +60,8 @@ import org.zaproxy.zap.extension.script.ScriptNode;
 import org.zaproxy.zap.extension.script.ScriptType;
 import org.zaproxy.zap.extension.script.ScriptUI;
 import org.zaproxy.zap.extension.script.ScriptWrapper;
-import org.zaproxy.zap.extension.scripts.scanrules.ScriptsPassiveScanner;
+import org.zaproxy.zap.extension.scripts.scanrules.ActiveScriptSynchronizer;
+import org.zaproxy.zap.extension.scripts.scanrules.PassiveScriptSynchronizer;
 import org.zaproxy.zap.extension.stdmenus.PopupContextMenuItemFactory;
 import org.zaproxy.zap.model.Context;
 
@@ -119,6 +121,9 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
     private ScriptWrapper currentLockedScript = null;
     private boolean lockOutputToDisplayedScript = false;
 
+    private final ActiveScriptSynchronizer activeScriptSynchronizer;
+    private final PassiveScriptSynchronizer passiveScriptSynchronizer;
+
     // private ZapMenuItem menuEnableScripts = null;
 
     public ExtensionScriptsUI() {
@@ -131,6 +136,8 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
             LOGGER.error(
                     "Scripts UI extension's order is not higher than Authentication extension's");
         }
+        activeScriptSynchronizer = new ActiveScriptSynchronizer();
+        passiveScriptSynchronizer = new PassiveScriptSynchronizer();
     }
 
     public static ImageIcon getIcon() {
@@ -257,7 +264,6 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
                 if (installedPscanRule != null
                         && installedPscanRule.getClass().getName().equals(corePscanRuleName)) {
                     extensionPscan.removePluginPassiveScanner(installedPscanRule);
-                    extensionPscan.addPluginPassiveScanner(new ScriptsPassiveScanner());
                 }
             }
         }
@@ -307,6 +313,9 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
             OptionsDialog optionsDialog = View.getSingleton().getOptionsDialog("");
             optionsDialog.removeParamPanel(scriptConsoleOptionsPanel);
         }
+
+        activeScriptSynchronizer.unload();
+        passiveScriptSynchronizer.unload();
 
         if (extScript != null) {
             if (hasView()) {
@@ -665,11 +674,20 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
         if (View.isInitialised() && display) {
             executeInEdt(() -> this.displayScript(script));
         }
-        if (script.getType().getName().equals(SCRIPT_EXT_TYPE) && script.isEnabled()) {
-            if (!this.installedExtenderScripts.containsKey(script.getName())) {
-                // It has been flagged as to be enabled
-                installExtenderScript(script);
-            }
+        switch (script.getType().getName()) {
+            case SCRIPT_EXT_TYPE:
+                if (script.isEnabled()
+                        && !this.installedExtenderScripts.containsKey(script.getName())) {
+                    // It has been flagged as to be enabled
+                    installExtenderScript(script);
+                }
+                break;
+            case ExtensionActiveScan.SCRIPT_TYPE_ACTIVE:
+                activeScriptSynchronizer.scriptAdded(script);
+                break;
+            case ExtensionPassiveScan.SCRIPT_TYPE_PASSIVE:
+                passiveScriptSynchronizer.scriptAdded(script);
+                break;
         }
     }
 
@@ -690,11 +708,19 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
         if (this.isScriptDisplayed(script)) {
             executeInEdt(() -> this.getConsolePanel().clearScript());
         }
-        if (script.getType().getName().equals(SCRIPT_EXT_TYPE)) {
-            if (this.installedExtenderScripts.containsKey(script.getName())) {
-                // It has been installed so uninstall it
-                uninstallExtenderScript(script);
-            }
+        switch (script.getType().getName()) {
+            case SCRIPT_EXT_TYPE:
+                if (this.installedExtenderScripts.containsKey(script.getName())) {
+                    // It has been installed so uninstall it
+                    uninstallExtenderScript(script);
+                }
+                break;
+            case ExtensionActiveScan.SCRIPT_TYPE_ACTIVE:
+                activeScriptSynchronizer.scriptRemoved(script);
+                break;
+            case ExtensionPassiveScan.SCRIPT_TYPE_PASSIVE:
+                passiveScriptSynchronizer.scriptRemoved(script);
+                break;
         }
         if (View.isInitialised()) {
             this.getConsolePanel().removeScript(script);
@@ -742,7 +768,16 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
     }
 
     @Override
-    public void scriptSaved(ScriptWrapper script) {}
+    public void scriptSaved(ScriptWrapper script) {
+        switch (script.getType().getName()) {
+            case ExtensionActiveScan.SCRIPT_TYPE_ACTIVE:
+                activeScriptSynchronizer.scriptAdded(script);
+                break;
+            case ExtensionPassiveScan.SCRIPT_TYPE_PASSIVE:
+                passiveScriptSynchronizer.scriptAdded(script);
+                break;
+        }
+    }
 
     public void showError(Exception e) {
         if (View.isInitialised()) {

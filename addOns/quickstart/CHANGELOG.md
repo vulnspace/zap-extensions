@@ -6,7 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 ### Changed
 - Maintenance changes.
+
+### Fixed
+- Help content typos.
+
+## [45] - 2024-03-25
+### Changed
+- Tweaked OSF sponsorship links.
+
+## [44] - 2024-03-13
+### Added
+- Support panel.
+
+### Changed
+- Maintenance changes.
 - Dropped "to Clipboard" from ZAP copy menu items and buttons (Issue 8179).
+- Panels to include OSF image and link.
 
 ## [43] - 2023-10-12
 ### Changed
@@ -230,6 +245,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[45]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v45
+[44]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v44
 [43]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v43
 [42]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v42
 [41]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v41

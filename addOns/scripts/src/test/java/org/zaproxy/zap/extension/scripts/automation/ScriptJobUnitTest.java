@@ -57,7 +57,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.quality.Strictness;
+import org.mockito.stubbing.Answer;
 import org.parosproxy.paros.CommandLine;
 import org.parosproxy.paros.Constant;
 import org.parosproxy.paros.control.Control;
@@ -431,6 +433,7 @@ class ScriptJobUnitTest extends TestUtils {
                         "  name: myScript");
         setJobData(job, yamlStr);
         ScriptWrapper scriptWrapper = mock(ScriptWrapper.class);
+        when(scriptWrapper.getTypeName()).thenReturn("standalone");
         when(extScript.getScript("myScript")).thenReturn(scriptWrapper);
 
         // When
@@ -441,6 +444,73 @@ class ScriptJobUnitTest extends TestUtils {
         // Then
         assertThat(progress.hasErrors(), is(equalTo(false)));
         verify(extScript, times(1)).invokeScript(scriptWrapper);
+    }
+
+    @Test
+    void shouldPropageScriptErrorsFromRunScript() throws Exception {
+        // Given
+        ScriptJob job = new ScriptJob();
+        String yamlStr =
+                String.join(
+                        "\n",
+                        "parameters:",
+                        "  action: RuN",
+                        "  type: \"standalone\"",
+                        "  name: myScript");
+        setJobData(job, yamlStr);
+        ScriptWrapper scriptWrapper = new ScriptWrapper();
+        scriptWrapper.setType(new ScriptType("standalone", null, null, false));
+        when(extScript.getScript("myScript")).thenReturn(scriptWrapper);
+        when(extScript.invokeScript(scriptWrapper))
+                .then(
+                        new Answer<>() {
+                            @Override
+                            public Void answer(InvocationOnMock invocation) throws Throwable {
+                                ((ScriptWrapper) invocation.getArgument(0))
+                                        .setLastException(new Exception());
+                                return null;
+                            }
+                        });
+
+        // When
+        job.verifyParameters(progress);
+        job.applyParameters(progress);
+        job.runJob(env, progress);
+
+        // Then
+        assertThat(progress.hasErrors(), is(equalTo(true)));
+        assertThat(progress.getErrors(), contains("!scripts.automation.error.scriptError!"));
+        verify(extScript, times(1)).invokeScript(scriptWrapper);
+    }
+
+    @Test
+    void shouldErrorIfRunningUnsupportedScriptType() {
+        // Given
+        ScriptJob job = new ScriptJob();
+        String yamlStr =
+                String.join(
+                        "\n",
+                        "parameters:",
+                        "  action: run",
+                        "  type: \"standalone\"",
+                        "  name: myScript");
+        setJobData(job, yamlStr);
+
+        ScriptWrapper scriptWrapper = mock(ScriptWrapper.class);
+        when(scriptWrapper.getTypeName()).thenReturn("active");
+        when(extScript.getScript("myScript")).thenReturn(scriptWrapper);
+
+        // When
+        job.verifyParameters(progress);
+        job.applyParameters(progress);
+        job.runJob(env, progress);
+
+        // Then
+        assertThat(progress.hasErrors(), is(equalTo(true)));
+        assertThat(progress.hasWarnings(), is(equalTo(false)));
+        assertThat(
+                progress.getErrors(),
+                contains("!scripts.automation.error.scriptTypeNotSupported!"));
     }
 
     @Test

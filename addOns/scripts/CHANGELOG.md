@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+## [45.2.0] - 2024-04-11
+### Added
+- Active and Passive Scripts with a `getMetadata()` function are now treated as first-class scan rules (Issue 7105).
+
+### Fixed
+- Error when trying to run an unsupported script type through the Automation Framework.
+- The "Scripts Passive Scanner" scan rule was being loaded twice.
+
+## [45.1.0] - 2024-03-25
+### Added
+- Support for menu weights (Issue 8369)
+
+### Fixed
+- Propagate script errors to the Automation Framework when running them.
+
 ## [45.0.0] - 2024-02-12
 ### Added
 - The scan rule functionality of scripts was moved from the ZAP core to this add-on (Related to Issue 7105).
@@ -296,6 +311,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[45.2.0]: https://github.com/zaproxy/zap-extensions/releases/scripts-v45.2.0
+[45.1.0]: https://github.com/zaproxy/zap-extensions/releases/scripts-v45.1.0
 [45.0.0]: https://github.com/zaproxy/zap-extensions/releases/scripts-v45.0.0
 [44]: https://github.com/zaproxy/zap-extensions/releases/scripts-v44
 [43]: https://github.com/zaproxy/zap-extensions/releases/scripts-v43

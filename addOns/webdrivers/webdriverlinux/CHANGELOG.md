@@ -4,6 +4,57 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+
+
+## [79] - 2024-04-11
+### Changed
+- Update ChromeDriver to 123.0.6312.122.
+
+
+
+## [78] - 2024-04-05
+### Changed
+- Update ChromeDriver to 123.0.6312.105.
+
+
+
+## [77] - 2024-03-28
+### Changed
+- Update ChromeDriver to 123.0.6312.86.
+
+
+
+## [76] - 2024-03-21
+### Changed
+- Update ChromeDriver to 123.0.6312.58.
+
+
+
+## [75] - 2024-03-13
+### Changed
+- Update ChromeDriver to 122.0.6261.128.
+
+
+
+## [74] - 2024-03-08
+### Changed
+- Update ChromeDriver to 122.0.6261.111.
+
+
+
+## [73] - 2024-02-29
+### Changed
+- Update ChromeDriver to 122.0.6261.94.
+
+
+
+## [72] - 2024-02-23
+### Changed
+- Update ChromeDriver to 122.0.6261.69.
+
+
+
+## [71] - 2024-02-22
 ### Changed
 - Update ChromeDriver to 122.0.6261.57.
 
@@ -309,6 +360,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First release: Firefox v0.13.0 Chrome v2.27
 
+[79]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v79
+[78]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v78
+[77]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v77
+[76]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v76
+[75]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v75
+[74]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v74
+[73]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v73
+[72]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v72
+[71]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v71
 [70]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v70
 [69]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v69
 [68]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v68
