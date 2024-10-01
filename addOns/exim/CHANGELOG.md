@@ -4,11 +4,32 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Fixed
+- Count invalid messages as tasks done toward progress when importing HARs.
+
+
+## [0.11.0] - 2024-09-24
+### Changed
+- Leverage Jackson library from the Common Library add-on.
+- Depend on newer version of Common Library add-on.
+- Leverage aboutsip's pkts.io library for parsing pcap files and organizing tcp streams
+- PCAP importing for simple HTTP/1.1 traffic, works for traces with: No duplicates or missing TCP segments, with no missing HTTP responses to HTTP requests, and for HTTP 1.1 only
+
+### Fixed
+- Correctly load Automation Framework template plans.
+- Base64 decode the response body when importing HARs.
+
+## [0.10.0] - 2024-07-22
+### Changed
+- HAR importing now uses Sebastian Stöhr's har-reader library. It should be much more tolerant of 'weird' HAR things, and thus be able to import more samples. (If you come across HAR that won't import please open an issue and provide a sample so we can work on further improvements!)
+
+## [0.9.0] - 2024-05-07
 ### Added
 - Initial PCAP import support (Issue 4812).
 - Support for menu weights (Issue 8369)
 
 ### Changed
+- Update minimum ZAP version to 2.15.0.
 - Maintenance changes.
 
 ## [0.8.0] - 2023-11-10
@@ -77,6 +98,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First release.
 
+[0.11.0]: https://github.com/zaproxy/zap-extensions/releases/exim-v0.11.0
+[0.10.0]: https://github.com/zaproxy/zap-extensions/releases/exim-v0.10.0
+[0.9.0]: https://github.com/zaproxy/zap-extensions/releases/exim-v0.9.0
 [0.8.0]: https://github.com/zaproxy/zap-extensions/releases/exim-v0.8.0
 [0.7.0]: https://github.com/zaproxy/zap-extensions/releases/exim-v0.7.0
 [0.6.0]: https://github.com/zaproxy/zap-extensions/releases/exim-v0.6.0

@@ -30,7 +30,7 @@ zapAddOn {
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">=1.24.0")
+                    version.set(">=1.25.0")
                 }
             }
         }
@@ -40,6 +40,11 @@ zapAddOn {
         pscanrules {
             register("org.zaproxy.zap.extension.scripts.scanrules.ScriptsPassiveScanner")
         }
+    }
+
+    apiClientGen {
+        api.set("org.zaproxy.zap.extension.scripts.ScriptApi")
+        messages.set(file("src/main/resources/org/zaproxy/zap/extension/scripts/resources/Messages.properties"))
     }
 }
 

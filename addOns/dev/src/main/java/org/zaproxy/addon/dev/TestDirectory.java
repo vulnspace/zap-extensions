@@ -105,6 +105,11 @@ public class TestDirectory implements HttpMessageHandler {
             }
 
             if (body == null) {
+                if (name.equals(this.getName())) {
+                    // Redirect with a trailing slash
+                    getServer().redirect(name + "/", msg);
+                    return;
+                }
                 LOGGER.debug("Failed to find tutorial file {}", name);
                 body = server.getTextFile("404.html");
                 msg.setResponseBody(body);

@@ -71,7 +71,7 @@ public class InsecureFormPostScanRule extends PluginPassiveScanner
         }
     }
 
-    private boolean isHttps(HttpMessage msg) {
+    private static boolean isHttps(HttpMessage msg) {
         String scheme = msg.getRequestHeader().getURI().getScheme();
         if ("https".equals(scheme)) {
             return true;
@@ -86,7 +86,7 @@ public class InsecureFormPostScanRule extends PluginPassiveScanner
 
     // TODO: these methods have been extracted from CharsetMismatchScanner
     // I think we should create helper methods for them
-    private boolean isResponseHTML(HttpMessage message, Source source) {
+    private static boolean isResponseHTML(HttpMessage message, Source source) {
         String contentType = message.getResponseHeader().getHeader(HttpHeader.CONTENT_TYPE);
         if (contentType == null) {
             return false;
@@ -101,10 +101,9 @@ public class InsecureFormPostScanRule extends PluginPassiveScanner
         return newAlert()
                 .setRisk(Alert.RISK_MEDIUM)
                 .setConfidence(Alert.CONFIDENCE_MEDIUM)
-                .setDescription(getDescriptionMessage())
+                .setDescription(Constant.messages.getString(MESSAGE_PREFIX + "desc"))
                 .setOtherInfo(getExtraInfoMessage(url, formElement))
-                .setSolution(getSolutionMessage())
-                .setReference(getReferenceMessage())
+                .setSolution(Constant.messages.getString(MESSAGE_PREFIX + "soln"))
                 .setEvidence(evidence)
                 .setCweId(319) // CWE-319: Cleartext Transmission of Sensitive Information
                 .setWascId(15); // WASC-15: Application Misconfiguration
@@ -113,22 +112,6 @@ public class InsecureFormPostScanRule extends PluginPassiveScanner
     @Override
     public int getPluginId() {
         return 10042;
-    }
-
-    /*
-     * Rule-associated messages
-     */
-
-    private String getDescriptionMessage() {
-        return Constant.messages.getString(MESSAGE_PREFIX + "desc");
-    }
-
-    private String getSolutionMessage() {
-        return Constant.messages.getString(MESSAGE_PREFIX + "soln");
-    }
-
-    private String getReferenceMessage() {
-        return Constant.messages.getString(MESSAGE_PREFIX + "refs");
     }
 
     private static String getExtraInfoMessage(String url, String formElement) {

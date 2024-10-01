@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 ### Changed
+- Include the whole HTTP message in the raised alerts.
+- Include the steps to reproduce the DOM XSS in the other info of the alert.
+
+### Fixed
+- Address false negatives through query parameters.
+
+## [19] - 2024-05-07
+### Changed
+- Update minimum ZAP version to 2.15.0.
 - Maintenance changes.
 
 ## [18] - 2023-10-12
@@ -117,6 +126,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## 1 - 2015-08-24
 
 
+[19]: https://github.com/zaproxy/zap-extensions/releases/domxss-v19
 [18]: https://github.com/zaproxy/zap-extensions/releases/domxss-v18
 [17]: https://github.com/zaproxy/zap-extensions/releases/domxss-v17
 [16]: https://github.com/zaproxy/zap-extensions/releases/domxss-v16

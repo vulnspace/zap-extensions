@@ -4,8 +4,33 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+
+
+## [50] - 2024-09-24
+### Changed
+- Rebrand to ZAP by Checkmarx.
+
+## [49] - 2024-09-02
+### Fixed
+- Do not change the URL field of the Manual Explore panel when the Mode changes (Issue 8591).
+
+## [48] - 2024-07-08
+### Changed
+- News display tweak.
+- Updated messages from "wappalyzer" to "Technology Detection".
+- Changed the Crash Override logo.
+
+## [47] - 2024-05-07
+### Changed
+- Update minimum ZAP version to 2.15.0.
+
+### Fixed
+- Sub panel names.
+
+## [46] - 2024-04-23
 ### Changed
 - Maintenance changes.
+- AJAX spider selection to include "if modern" option.
 
 ### Fixed
 - Help content typos.
@@ -245,6 +270,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[50]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v50
+[49]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v49
+[48]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v48
+[47]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v47
+[46]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v46
 [45]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v45
 [44]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v44
 [43]: https://github.com/zaproxy/zap-extensions/releases/quickstart-v43

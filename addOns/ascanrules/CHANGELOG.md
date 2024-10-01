@@ -4,9 +4,36 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Changed
+- The XML External Entity Attack scan rule now include example alert functionality for documentation generation purposes (Issue 6119).
+
+## [68] - 2024-09-24
+### Changed
+- Maintenance changes.
+- The following scan rules now include example alert functionality for documentation generation purposes (Issue 6119):
+    - Spring Actuator
+    - XSLT Injection
+    - XPath Injection
+
+### Fixed
+- Address false positives with Source Code Disclosure - CVE-2012-1823 scan rule, by not scanning binary responses and responses that already contain PHP source (Issue 8638).
+- Cross Site Scripting Rule false positives at medium threshold by matching the expected context (Issue 8640).
+
+## [67] - 2024-07-22
+
+### Changed
+- The following rules now includes example alert functionality for documentation generation purposes (Issue 6119), as well as now including Alert Tags (OWASP Top 10, WSTG, and updated CWE):
+    - Server Side Template Injection
+    - Server Side Template Injection (Blind)
 
 ### Fixed
 - False positives in the Path Traversal rule.
+- Alert text for various rules has been updated to more consistently use periods and spaces in a uniform manner.
+- False Positives in the Remote File Inclusion rule (Issue 8561).
+
+## [66] - 2024-05-07
+### Changed
+- Update minimum ZAP version to 2.15.0.
 
 ## [65] - 2024-03-28
 ### Changed
@@ -522,6 +549,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[68]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v68
+[67]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v67
+[66]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v66
 [65]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v65
 [64]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v64
 [63]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v63

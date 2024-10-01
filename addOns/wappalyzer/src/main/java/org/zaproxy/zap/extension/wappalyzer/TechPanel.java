@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,8 +43,10 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.MappedValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.parosproxy.paros.Constant;
+import org.parosproxy.paros.control.Control;
 import org.parosproxy.paros.extension.AbstractPanel;
 import org.parosproxy.paros.view.View;
+import org.zaproxy.zap.utils.DisplayUtils;
 import org.zaproxy.zap.utils.SortedComboBoxModel;
 import org.zaproxy.zap.utils.TableExportButton;
 import org.zaproxy.zap.view.ZapToggleButton;
@@ -69,6 +72,7 @@ public class TechPanel extends AbstractPanel {
 
     private TableExportButton<JXTable> exportButton = null;
     private ZapToggleButton enableButton = null;
+    private JButton optionsButton;
 
     private static final Icon TRANSPARENT_ICON =
             new Icon() {
@@ -163,6 +167,7 @@ public class TechPanel extends AbstractPanel {
             panelToolbar.add(getEnableToggleButton());
 
             panelToolbar.add(Box.createHorizontalGlue());
+            panelToolbar.add(getOptionsButton());
         }
         return panelToolbar;
     }
@@ -331,14 +336,14 @@ public class TechPanel extends AbstractPanel {
                             Constant.messages.getString("wappalyzer.toolbar.toggle.state.enabled"),
                             true);
             enableButton.setIcon(
-                    new ImageIcon(
+                    DisplayUtils.getScaledIcon(
                             TechPanel.class.getResource(
                                     ExtensionWappalyzer.RESOURCE + "/off.png")));
             enableButton.setToolTipText(
                     Constant.messages.getString(
                             "wappalyzer.toolbar.toggle.state.disabled.tooltip"));
             enableButton.setSelectedIcon(
-                    new ImageIcon(
+                    DisplayUtils.getScaledIcon(
                             TechPanel.class.getResource(ExtensionWappalyzer.RESOURCE + "/on.png")));
             enableButton.setSelectedToolTipText(
                     Constant.messages.getString("wappalyzer.toolbar.toggle.state.enabled.tooltip"));
@@ -358,5 +363,25 @@ public class TechPanel extends AbstractPanel {
                     });
         }
         return enableButton;
+    }
+
+    private JButton getOptionsButton() {
+        if (optionsButton == null) {
+            optionsButton = new JButton();
+            optionsButton.setToolTipText(
+                    Constant.messages.getString("wappalyzer.toolbar.options.name"));
+            optionsButton.setIcon(
+                    DisplayUtils.getScaledIcon(
+                            TechPanel.class.getResource("/resource/icon/16/041.png")));
+
+            optionsButton.addActionListener(
+                    e ->
+                            Control.getSingleton()
+                                    .getMenuToolsControl()
+                                    .options(
+                                            Constant.messages.getString(
+                                                    "wappalyzer.optionspanel.name")));
+        }
+        return optionsButton;
     }
 }

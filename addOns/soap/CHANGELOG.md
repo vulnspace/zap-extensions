@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+## [23] - 2024-05-07
+### Changed
+- Update minimum ZAP version to 2.15.0.
+
 ## [22] - 2024-03-25
 ### Added
 - Video link in help for Automation Framework job.
@@ -164,6 +168,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version
 
+[23]: https://github.com/zaproxy/zap-extensions/releases/soap-v23
 [22]: https://github.com/zaproxy/zap-extensions/releases/soap-v22
 [21]: https://github.com/zaproxy/zap-extensions/releases/soap-v21
 [20]: https://github.com/zaproxy/zap-extensions/releases/soap-v20

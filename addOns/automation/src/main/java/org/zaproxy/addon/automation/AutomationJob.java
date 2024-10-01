@@ -493,6 +493,14 @@ public abstract class AutomationJob implements Comparable<AutomationJob> {
         tests.forEach(t -> t.logToProgress(progress));
     }
 
+    public boolean supportsAlertTests() {
+        return false;
+    }
+
+    public String getKeyAlertTestsResultData() {
+        return null;
+    }
+
     public boolean supportsMonitorTests() {
         return false;
     }

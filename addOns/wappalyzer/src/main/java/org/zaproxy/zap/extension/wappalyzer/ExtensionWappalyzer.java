@@ -42,7 +42,7 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.parosproxy.paros.Constant;
 import org.parosproxy.paros.control.Control;
-import org.parosproxy.paros.control.Control.Mode;
+import org.parosproxy.paros.core.scanner.Alert;
 import org.parosproxy.paros.extension.Extension;
 import org.parosproxy.paros.extension.ExtensionAdaptor;
 import org.parosproxy.paros.extension.ExtensionHook;
@@ -51,14 +51,19 @@ import org.parosproxy.paros.extension.SessionChangedListener;
 import org.parosproxy.paros.model.Session;
 import org.parosproxy.paros.model.SiteNode;
 import org.parosproxy.paros.view.View;
+import org.zaproxy.zap.extension.alert.ExampleAlertProvider;
 import org.zaproxy.zap.extension.pscan.ExtensionPassiveScan;
 import org.zaproxy.zap.extension.search.ExtensionSearch;
+import org.zaproxy.zap.utils.ThreadUtils;
 import org.zaproxy.zap.view.ScanPanel;
 import org.zaproxy.zap.view.SiteMapListener;
 import org.zaproxy.zap.view.SiteMapTreeCellRenderer;
 
 public class ExtensionWappalyzer extends ExtensionAdaptor
-        implements SessionChangedListener, SiteMapListener, WappalyzerApplicationHolder {
+        implements SessionChangedListener,
+                SiteMapListener,
+                ApplicationHolder,
+                ExampleAlertProvider {
 
     public static final String NAME = "ExtensionWappalyzer";
 
@@ -77,7 +82,7 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
 
     private Map<String, TechTableModel> siteTechMap;
     private boolean enabled;
-    private WappalyzerParam wappalyzerParam;
+    private TechDetectParam techDetectParam;
 
     private static final Logger LOGGER = LogManager.getLogger(ExtensionWappalyzer.class);
 
@@ -85,13 +90,32 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
     private static final List<Class<? extends Extension>> EXTENSION_DEPENDENCIES =
             List.of(ExtensionPassiveScan.class);
 
-    private WappalyzerPassiveScanner passiveScanner;
-    private WappalyzerAPI api;
+    private TechPassiveScanner passiveScanner;
+    private TechApi api;
+
+    public enum Mode {
+        QUICK(Constant.messages.getString("wappalyzer.mode.quick")),
+        EXHAUSTIVE(Constant.messages.getString("wappalyzer.mode.exhaustive"));
+        private final String name;
+
+        Mode(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+    }
 
     /**
      * TODO implement Version handling Confidence handling - need to test for daemon mode (esp
      * revisits) Issues Handle load session - store tech in db? Sites pull down not populated if no
-     * tech found - is this actually a problem? One pattern still fails to compile
+     * tech found - is this actually a problem?
      */
     public ExtensionWappalyzer() {
         super(NAME);
@@ -110,6 +134,7 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
                         "com.github.weisj.jsvg.util.ResourceUtil",
                         "com.github.weisj.jsvg.parser.css.impl.SimpleCssParser",
                         "com.github.weisj.jsvg.parser.css.impl.Lexer",
+                        "com.github.weisj.jsvg.parser.SVGLoader",
                         "com.github.weisj.jsvg.nodes.Image",
                         "com.github.weisj.jsvg.nodes.container.BaseContainerNode"),
                 Level.OFF);
@@ -124,15 +149,14 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
             LOGGER.error("Failed to enumerate Tech Detection technologies:", e);
         }
 
-        WappalyzerData result =
-                new WappalyzerJsonParser()
-                        .parse(CATEGORIES_PATH, technologyFiles, View.isInitialised());
+        TechData result =
+                new TechsJsonParser().parse(CATEGORIES_PATH, technologyFiles, View.isInitialised());
         this.applications = result.getApplications();
         this.categories = result.getCategories();
 
         enabled = true;
-        wappalyzerParam = new WappalyzerParam();
-        passiveScanner = new WappalyzerPassiveScanner(this);
+        techDetectParam = new TechDetectParam();
+        passiveScanner = new TechPassiveScanner(this);
     }
 
     private static boolean isTechnology(ZipEntry entry) {
@@ -145,7 +169,7 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
         return name.substring(name.lastIndexOf(TECHNOLOGIES_PATH));
     }
 
-    WappalyzerPassiveScanner getPassiveScanner() {
+    TechPassiveScanner getPassiveScanner() {
         return passiveScanner;
     }
 
@@ -161,24 +185,28 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
             ExtensionHookView pv = extensionHook.getHookView();
             extensionHook.getHookView().addStatusPanel(getTechPanel());
             extensionHook.getHookMenu().addPopupMenuItem(this.getPopupMenuEvidence());
+            extensionHook.getHookView().addOptionPanel(new TechOptionsPanel());
         }
 
-        this.api = new WappalyzerAPI(this);
+        this.api = new TechApi(this);
         extensionHook.addApiImplementor(this.api);
-        extensionHook.addOptionsParamSet(wappalyzerParam);
+        extensionHook.addOptionsParamSet(techDetectParam);
 
         ExtensionPassiveScan extPScan =
                 Control.getSingleton()
                         .getExtensionLoader()
                         .getExtension(ExtensionPassiveScan.class);
         extPScan.addPassiveScanner(passiveScanner);
+        extensionHook.addOptionsChangedListener(passiveScanner);
     }
 
     @Override
     public void optionsLoaded() {
         super.optionsLoaded();
 
-        setWappalyzer(wappalyzerParam.isEnabled());
+        setWappalyzer(techDetectParam.isEnabled());
+        passiveScanner.setMode(techDetectParam.getMode());
+        passiveScanner.setRaiseAlerts(techDetectParam.isRaiseAlerts());
     }
 
     void setWappalyzer(boolean enabled) {
@@ -187,11 +215,12 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
         }
         this.enabled = enabled;
 
-        wappalyzerParam.setEnabled(enabled);
+        techDetectParam.setEnabled(enabled);
         getPassiveScanner().setEnabled(enabled);
 
         if (hasView()) {
-            getTechPanel().getEnableToggleButton().setSelected(enabled);
+            ThreadUtils.invokeLater(
+                    () -> getTechPanel().getEnableToggleButton().setSelected(enabled));
         }
     }
 
@@ -371,6 +400,7 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
     private void sessionChangedEventHandler(Session session) {
         // Clear all scans
         recreateSiteTreeMap();
+        getPassiveScanner().reset();
         if (hasView()) {
             this.getTechPanel().reset();
             if (session == null) {
@@ -391,7 +421,7 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
     }
 
     @Override
-    public void sessionModeChanged(Mode arg0) {
+    public void sessionModeChanged(org.parosproxy.paros.control.Control.Mode arg0) {
         // Ignore
     }
 
@@ -438,5 +468,14 @@ public class ExtensionWappalyzer extends ExtensionAdaptor
         if (updateLoggers) {
             ctx.updateLoggers();
         }
+    }
+
+    @Override
+    public List<Alert> getExampleAlerts() {
+        return passiveScanner.getExampleAlerts();
+    }
+
+    public String getHelpLink() {
+        return passiveScanner.getHelpLink();
     }
 }

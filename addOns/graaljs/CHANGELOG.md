@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+## [0.8.0] - 2024-09-24
+### Added
+- Document the engine name in the help page.
+
+### Changed
+- Maintenance changes.
+- Update script templates:
+  - authentication/Authentication default template GraalJS.js - remove outdated example code.
+  - httpsender/AddZapHeader GraalJS.js - fix runtime error (Issue 8611) and update documentation.
+  - httpsender/HttpSender default template GraalJS.js - update documentation.
+
+## [0.7.0] - 2024-05-07
+### Changed
+- Update minimum ZAP version to 2.15.0.
+- Disable warns about the engine being executed in interpreter mode, that's the expected mode of execution.
+
 ## [0.6.0] - 2024-04-11
 ### Changed
 - Update Active and Passive Script Templates to include a `getMetadata` function. This will allow them to be used as regular scan rules.
@@ -48,6 +64,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 First version.
 
+[0.8.0]: https://github.com/zaproxy/zap-extensions/releases/graaljs-v0.8.0
+[0.7.0]: https://github.com/zaproxy/zap-extensions/releases/graaljs-v0.7.0
 [0.6.0]: https://github.com/zaproxy/zap-extensions/releases/graaljs-v0.6.0
 [0.5.0]: https://github.com/zaproxy/zap-extensions/releases/graaljs-v0.5.0
 [0.4.0]: https://github.com/zaproxy/zap-extensions/releases/graaljs-v0.4.0

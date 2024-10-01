@@ -4,7 +4,45 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Fixed
+- Handle exceptions while running jobs.
 
+## [0.42.0] - 2024-09-02
+### Added
+- Allow to configure the structural parameters of a context (Issue 7780).
+
+### Fixed
+- NPE in GUI if the technology was not specified.
+
+### Changed
+- Rely on Passive Scanner add-on for the passive scan related jobs (Issue 7959).
+
+### Deprecated
+- The classes of the passive scan related jobs are now deprecated and will be removed in a following release, use the classes from the Passive Scanner add-on instead (Issue 7959).
+
+## [0.41.0] - 2024-07-31
+### Added
+- Env / continueOnFailure option.
+### Changed
+- Maintenance changes.
+
+### Fixed
+- Address errors when the last plan loaded had a `passiveScan-config` job with configured rules.
+
+## [0.40.1] - 2024-05-28
+### Fixed
+- Address HTTP authentication failure when the realm is not configured.
+
+## [0.40.0] - 2024-05-07
+### Changed
+- Update minimum ZAP version to 2.15.0.
+
+## [0.39.0] - 2024-04-23
+### Added
+- Allow reports to know the number of Sites tree nodes actively scanned (Issue 7022).
+
+### Changed
+- Allow to run remote plans through the command line.
 
 ## [0.38.0] - 2024-04-11
 ### Fixed
@@ -377,6 +415,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version.
 
+[0.42.0]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.42.0
+[0.41.0]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.41.0
+[0.40.1]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.40.1
+[0.40.0]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.40.0
+[0.39.0]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.39.0
 [0.38.0]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.38.0
 [0.37.0]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.37.0
 [0.36.0]: https://github.com/zaproxy/zap-extensions/releases/automation-v0.36.0

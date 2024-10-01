@@ -5,6 +5,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+
+## [0.18.0] - 2024-09-24
+### Added
+- Send success/failure stats.
+
+### Changed
+- Stop retrying 429 and 503 responses, instead of waiting for `retry-after` (Issue 8627).
+
+### Fixed
+- Fix typo in log message.
+
+## [0.17.0] - 2024-09-02
+### Changed
+- Maintenance changes.
+
+### Fixed
+- Guard against user without authentication state.
+- Fix exception after regenerating the root CA cert during ZAP startup (Issue 8499).
+- Use configured timeout as default.
+
+## [0.16.0] - 2024-05-07
+### Changed
+- Update minimum ZAP version to 2.15.0.
+- Update default user-agents.
+
 ### Fixed
 - Help content typos.
 
@@ -180,6 +206,9 @@ would not be cleared when reusing the same message.
   - Options panel to manage the root CA certificate and issued certificates.
   - API endpoints to configure the validity of the root CA certificate and issued certificates ([Issue 4673](https://github.com/zaproxy/zaproxy/issues/4673)).
 
+[0.18.0]: https://github.com/zaproxy/zap-extensions/releases/network-v0.18.0
+[0.17.0]: https://github.com/zaproxy/zap-extensions/releases/network-v0.17.0
+[0.16.0]: https://github.com/zaproxy/zap-extensions/releases/network-v0.16.0
 [0.15.0]: https://github.com/zaproxy/zap-extensions/releases/network-v0.15.0
 [0.14.0]: https://github.com/zaproxy/zap-extensions/releases/network-v0.14.0
 [0.13.0]: https://github.com/zaproxy/zap-extensions/releases/network-v0.13.0

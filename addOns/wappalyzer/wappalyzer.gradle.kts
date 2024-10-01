@@ -1,9 +1,9 @@
 import org.zaproxy.gradle.addon.AddOnStatus
 
-description = "Technology detection using Wappalyzer: wappalyzer.com"
+description = "Technology detection using various fingerprints and identifiers."
 
 zapAddOn {
-    addOnName.set("Wappalyzer - Technology Detection")
+    addOnName.set("Technology Detection")
     addOnStatus.set(AddOnStatus.RELEASE)
 
     manifest {
@@ -33,7 +33,7 @@ zapAddOn {
     }
 
     apiClientGen {
-        api.set("org.zaproxy.zap.extension.wappalyzer.WappalyzerAPI")
+        api.set("org.zaproxy.zap.extension.wappalyzer.TechApi")
         messages.set(file("src/main/resources/org/zaproxy/zap/extension/wappalyzer/resources/Messages.properties"))
     }
 }
@@ -45,8 +45,8 @@ dependencies {
     compileOnly(libs.log4j.core)
 
     implementation("com.google.re2j:re2j:1.7")
-    implementation("com.github.weisj:jsvg:1.2.0")
-    implementation("org.jsoup:jsoup:1.16.2")
+    implementation("com.github.weisj:jsvg:1.4.0")
+    implementation("org.jsoup:jsoup:1.17.2")
 
     testImplementation(project(":testutils"))
 }

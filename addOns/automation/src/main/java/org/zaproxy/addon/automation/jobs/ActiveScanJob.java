@@ -67,6 +67,16 @@ public class ActiveScanJob extends AutomationJob {
         data = new Data(this, this.parameters, this.policyDefinition);
     }
 
+    @Override
+    public boolean supportsAlertTests() {
+        return true;
+    }
+
+    @Override
+    public String getKeyAlertTestsResultData() {
+        return ActiveScanJobResultData.KEY;
+    }
+
     private ExtensionActiveScan getExtAScan() {
         if (extAScan == null) {
             extAScan =

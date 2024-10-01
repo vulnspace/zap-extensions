@@ -3,7 +3,7 @@ import org.zaproxy.gradle.spotless.ValidateImports
 
 plugins {
     id("com.diffplug.spotless")
-    id("org.zaproxy.common") version "0.2.0" apply false
+    id("org.zaproxy.common") version "0.3.0" apply false
     id("com.github.ben-manes.versions") version "0.50.0"
     id("org.sonarqube") version "4.3.0.3225"
     id("net.ltgt.errorprone") version "3.1.0"
@@ -11,12 +11,13 @@ plugins {
 
 apply(from = "$rootDir/gradle/ci.gradle.kts")
 
-val validateImports = ValidateImports(
-    mapOf(
-        "import org.apache.commons.lang." to
-            "Import/use classes from Commons Lang 3, instead of Lang 2.",
-    ),
-)
+val validateImports =
+    ValidateImports(
+        mapOf(
+            "import org.apache.commons.lang." to
+                "Import/use classes from Commons Lang 3, instead of Lang 2.",
+        ),
+    )
 
 allprojects {
     apply(plugin = "com.diffplug.spotless")
@@ -42,7 +43,7 @@ allprojects {
 
     project.plugins.withType(JavaPlugin::class) {
         dependencies {
-            "errorprone"("com.google.errorprone:error_prone_core:2.23.0")
+            "errorprone"("com.google.errorprone:error_prone_core:2.26.1")
         }
 
         java {
@@ -53,6 +54,9 @@ allprojects {
     }
 
     tasks.withType<JavaCompile>().configureEach {
+        if (JavaVersion.current().getMajorVersion() >= "21") {
+            options.compilerArgs = options.compilerArgs + "-Xlint:-this-escape"
+        }
         options.errorprone {
             disableAllChecks.set(true)
             error(
@@ -77,5 +81,4 @@ sonarqube {
     }
 }
 
-fun Project.java(configure: JavaPluginExtension.() -> Unit): Unit =
-    (this as ExtensionAware).extensions.configure("java", configure)
+fun Project.java(configure: JavaPluginExtension.() -> Unit): Unit = (this as ExtensionAware).extensions.configure("java", configure)

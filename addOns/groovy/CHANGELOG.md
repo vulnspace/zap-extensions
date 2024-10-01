@@ -5,7 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Added
+- Document the engine name in the help page.
 
+### Changed
+- Update minimum ZAP version to 2.15.0.
+- Update script templates:
+  - authentication/AuthenticationDefaultTemplate.groovy - remove outdated example code.
+  - httpsender/HttpSenderDefaultTemplate.groovy - update documentation.
 
 ## [3.2.0] - 2024-04-11
 ### Changed

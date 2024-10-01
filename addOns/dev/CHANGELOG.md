@@ -4,7 +4,19 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Added
+- Extra protected pages to simple-json-cookie to ensure spidering really works.
 
+### Fixed
+- Issue where folder level pages without a trailing slash did not link correctly to sub pages.
+
+
+## [0.6.0] - 2024-07-22
+### Added
+- Page protected by auth in order to provide a simple test for authenticated spidering.
+
+### Changed
+- Update minimum ZAP version to 2.15.0.
 
 ## [0.5.0] - 2024-01-10
 ### Added
@@ -45,6 +57,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version.
 
+[0.6.0]: https://github.com/zaproxy/zap-extensions/releases/dev-v0.6.0
 [0.5.0]: https://github.com/zaproxy/zap-extensions/releases/dev-v0.5.0
 [0.4.0]: https://github.com/zaproxy/zap-extensions/releases/dev-v0.4.0
 [0.3.0]: https://github.com/zaproxy/zap-extensions/releases/dev-v0.3.0

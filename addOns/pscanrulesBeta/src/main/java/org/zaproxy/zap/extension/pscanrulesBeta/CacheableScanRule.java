@@ -692,7 +692,7 @@ public class CacheableScanRule extends PluginPassiveScanner implements CommonPas
         }
     }
 
-    private Long extractAgeValue(String directiveToken, int tokenLength) {
+    private static Long extractAgeValue(String directiveToken, int tokenLength) {
         int commaLocation = directiveToken.indexOf(",", tokenLength);
         return Long.parseLong(
                 directiveToken.substring(
@@ -760,8 +760,6 @@ public class CacheableScanRule extends PluginPassiveScanner implements CommonPas
                 .setName(Constant.messages.getString(MESSAGE_PREFIX_STORABLE_NONCACHEABLE + "name"))
                 .setDescription(
                         Constant.messages.getString(MESSAGE_PREFIX_STORABLE_NONCACHEABLE + "desc"))
-                .setSolution(
-                        Constant.messages.getString(MESSAGE_PREFIX_STORABLE_NONCACHEABLE + "soln"))
                 .setReference(
                         Constant.messages.getString(MESSAGE_PREFIX_STORABLE_NONCACHEABLE + "refs"));
     }

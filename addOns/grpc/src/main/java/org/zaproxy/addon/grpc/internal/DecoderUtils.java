@@ -21,6 +21,8 @@ package org.zaproxy.addon.grpc.internal;
 
 import com.google.protobuf.CodedInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class DecoderUtils {
@@ -41,6 +43,11 @@ public class DecoderUtils {
     public static final int BIT64_WIRE_TYPE = 1;
     public static final int LENGTH_DELIMITED_WIRE_TYPE = 2;
     public static final int BIT32_WIRE_TYPE = 5;
+
+    public enum DecodingMethod {
+        BASE64_ENCODED,
+        DIRECT
+    }
 
     static boolean isGraphic(byte ch) {
         // Check if the character is printable
@@ -141,7 +148,7 @@ public class DecoderUtils {
                                 .append("B::")
                                 .append(DecoderUtils.toHexString(stringBytes));
                     } else {
-                        decodedValueBuilder.append("::").append(decoded);
+                        decodedValueBuilder.append("::").append('"').append(decoded).append('"');
                     }
                 } else {
                     decodedValueBuilder.append("N::").append(validMessage);
@@ -159,5 +166,16 @@ public class DecoderUtils {
         ProtoBufNestedMessageDecoder protobufNestedMessageDecoder =
                 new ProtoBufNestedMessageDecoder();
         return protobufNestedMessageDecoder.decode(stringBytes);
+    }
+
+    static byte[] splitMessageBodyAndStatusCode(byte[] encodedText)
+            throws UnsupportedEncodingException {
+        String encodedString = new String(encodedText, StandardCharsets.UTF_8);
+
+        String[] parts = encodedString.split("=");
+
+        String base64EncodedMessageBodyText = parts[0];
+
+        return base64EncodedMessageBodyText.getBytes(StandardCharsets.UTF_8);
     }
 }

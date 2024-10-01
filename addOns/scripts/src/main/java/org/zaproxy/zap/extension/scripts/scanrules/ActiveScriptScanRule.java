@@ -193,7 +193,10 @@ public class ActiveScriptScanRule extends ActiveScriptHelper {
 
     @Override
     public String getReference() {
-        return String.join("\n", metadata.getReferences());
+        if (metadata.getReferences() != null && !metadata.getReferences().isEmpty()) {
+            return String.join("\n", metadata.getReferences());
+        }
+        return "";
     }
 
     @Override
@@ -235,6 +238,14 @@ public class ActiveScriptScanRule extends ActiveScriptHelper {
     @Override
     public boolean isEnabled() {
         return script.isEnabled();
+    }
+
+    public String getCodeLink() {
+        return metadata.getCodeLink();
+    }
+
+    public String getHelpLink() {
+        return metadata.getHelpLink();
     }
 
     private ExtensionScript getExtScript() {
