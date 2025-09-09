@@ -720,7 +720,7 @@ public class SqlInjectionScanRule extends AbstractAppParamPlugin
                     // Double check that the service doesn't respond with a 500 for all invalid
                     // values
                     HttpMessage msgSafe = getNewMsg();
-                    setParameter(msgSafe, param, "S4feV4lu3");
+                    setParameter(msgSafe, param, "''");
 
                     try {
                         sendAndReceive(msgSafe, false);
